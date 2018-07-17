@@ -9,3 +9,4 @@ sferes2/.lock-wscript
 robdyn/.waf*
 robdyn/.lock-wscript
 robdyn/bld
+exp/hexa_supg_hyperneat/hexa_supg_hyperneat_*
