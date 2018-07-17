@@ -32,5 +32,5 @@ echo "robdyn" > modules.conf
 
 
 CXXFLAGS='-fpermissive' ./waf configure --no-mpi --robdyn-osg --includes=/usr/local/include --libs==/usr/lib/x86_64-linux-gnu --robdyn $INSTALL --eigen3 /usr/include/eigen3 --boost-libs=/usr/lib/x86_64-linux-gnu --cpp11 yes
-./waf -j4
-./waf --exp hexa_supg_hyperneat -j4
+./waf -j3
+./waf --exp hexa_supg_hyperneat -j3
