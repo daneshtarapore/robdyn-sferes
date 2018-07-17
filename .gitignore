@@ -1,0 +1,8 @@
+robdyn/*.pyc
+sferes2/*.pyc
+install/
+sferes2/build
+sferes2/virtual*
+sferes2/ahmed*
+sferes2/.waf*
+robdyn/bld
