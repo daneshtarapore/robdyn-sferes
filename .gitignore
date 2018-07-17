@@ -5,4 +5,7 @@ sferes2/build
 sferes2/virtual*
 sferes2/ahmed*
 sferes2/.waf*
+sferes2/.lock-wscript
+robdyn/.waf*
+robdyn/.lock-wscript
 robdyn/bld
