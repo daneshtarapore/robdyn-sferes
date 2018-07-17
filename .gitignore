@@ -3,7 +3,7 @@ sferes2/*.pyc
 install/
 sferes2/build
 sferes2/virtual*
-sferes2/ahmed*
+sferes2/GS60*
 sferes2/.waf*
 sferes2/.lock-wscript
 robdyn/.waf*
