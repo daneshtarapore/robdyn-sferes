@@ -1,6 +1,6 @@
 // THIS IS A GENERATED FILE - DO NOT EDIT
 #define GRAPHIC
-#line 1 "/home/danesh/tarapore_2016_gecco/sferes2/exp/hexa_supg_hyperneat/hexa_supg_hyperneat.cpp"
+#line 1 "/home/ahmed/robdyn-sferes/sferes2/exp/hexa_supg_hyperneat/hexa_supg_hyperneat.cpp"
 /*================================================================*/
 //#define SEEDED_ENTIREPOP // The entire population is seeded as it is - after damage occurs
 /*================================================================*/
@@ -94,17 +94,18 @@ struct Params
     struct pop //Parameters of the population
     {
         static constexpr unsigned size = 100; //population size
-#ifdef SEEDED_NSGA
-        static constexpr unsigned nb_gen = 10001; //10001; //total number of generations of evolution
-        static constexpr int dump_period = 10;    //logs are written every dump_period generations
+#ifdef MICRO
+        static constexpr unsigned nb_gen = 101;
+        static constexpr int dump_period = 10;
 #else
 
-#ifdef SEEDED_ENTIREPOP
-        static constexpr unsigned nb_gen = 8000 + 10001;
-#else
-        static constexpr unsigned nb_gen = 10001; //10001;
-#endif
-        static constexpr int dump_period = 50;  //logs are written every dump_period generations
+# ifdef MINI
+        static constexpr unsigned nb_gen = 1001;
+        static constexpr int dump_period = 50;
+# else
+        static constexpr unsigned nb_gen = 10001; //10001; //total number of generations of evolution
+        static constexpr int dump_period = 100;    //logs are written every dump_period generations
+# endif
 #endif
 
         static constexpr int initial_aleat = 1; //initial population size at first generation is scaled by initial_aleat
@@ -137,9 +138,13 @@ struct Params
 
       struct dnn //the parameters for the cppn
       {
+#ifndef ORIENTFB
             //x1 and y1, the position of the supg; time since last trigger event + bias input
             static constexpr size_t nb_inputs = 4;
-
+#else
+            //x1 and y1, the position of the supg; time since last trigger event, heading orientation error + bias input
+            static constexpr size_t nb_inputs = 5;
+#endif
         //outputs: supg output and offset to timer
         static constexpr size_t nb_outputs = 2;
         static constexpr init_t init = ff; //feedforward nn
@@ -273,7 +278,7 @@ void init_simu(int argc ,char** argv, bool master)
 
 
 SFERES_FITNESS(FitSpace, sferes::fit::Fitness)
-{    
+{
     public:
     float servo_frequencies_max;
 

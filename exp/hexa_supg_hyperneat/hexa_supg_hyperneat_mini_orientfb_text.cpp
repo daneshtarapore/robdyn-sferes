@@ -1,4 +1,6 @@
 // THIS IS A GENERATED FILE - DO NOT EDIT
+#define MINI
+#define ORIENTFB
 #define TEXT
 #line 1 "/home/ahmed/robdyn-sferes/sferes2/exp/hexa_supg_hyperneat/hexa_supg_hyperneat.cpp"
 /*================================================================*/

@@ -1,5 +1,7 @@
 // THIS IS A GENERATED FILE - DO NOT EDIT
-#define TEXT
+#define MICRO
+#define ORIENTFB
+#define GRAPHIC
 #line 1 "/home/ahmed/robdyn-sferes/sferes2/exp/hexa_supg_hyperneat/hexa_supg_hyperneat.cpp"
 /*================================================================*/
 //#define SEEDED_ENTIREPOP // The entire population is seeded as it is - after damage occurs

@@ -88,7 +88,11 @@ public:
         _develop(_cppn); // develop the CPPN (not the HNN)
         _cppn.init();
 
+#ifndef ORIENTFB
         assert(_cppn.get_nb_inputs() == 4);  //x1 and y1, the position of the supg; time since last trigger event + bias input
+#else
+        assert(_cppn.get_nb_inputs() == 5); // add the orientation error input
+#endif
         _create_substrate();
     }
 
@@ -97,7 +101,11 @@ public:
         typename cppn_t::weight_t w;
         w.gen().data(0, 0.75f);//corresponds to 1 in range of weights from -2 to 2, because [0, 1] -> [-2, 2]
 
+#ifndef ORIENTFB
         assert(ParamsConns::dnn::nb_inputs == 4);
+#else
+        assert(ParamsConns::dnn::nb_inputs == 5);
+#endif
 
 
         assert(ParamsConns::dnn::nb_outputs == 2);
@@ -145,6 +153,7 @@ public:
 
     std::vector<float> query(const temporalpoint_t& p1, float normalized_heading = 0.0)
     {
+#ifndef ORIENTFB
         std::vector<float> in(4);
         // rescaling inputs to the network so that after applying the linear activation, they more fully utilize range of [-1, +1] and bias input is at 1
         in[0] = p1.get<0>();
@@ -152,7 +161,15 @@ public:
         in[2] = p1.get<2>(); // Multiplying by InputRescaleFactor will be responsible for the freqiency at 3 Hz instead of 1 Hz.
 
         in[3] = 1.0; //bias input
-
+#else
+        std::vector<float> in(5);
+        // rescaling inputs to the network so that after applying the linear activation, they more fully utilize range of [-1, +1] and bias input is at 1
+        in[0] = p1.get<0>();
+        in[1] = p1.get<1>();
+        in[2] = p1.get<2>(); // Multiplying by InputRescaleFactor will be responsible for the freqiency at 3 Hz instead of 1 Hz.
+        in[3] = normalized_heading;
+        in[4] = 1.0; //bias input
+#endif
         for (size_t k = 0; k < _cppn.get_depth(); ++k)
             _cppn.step(in);
 
