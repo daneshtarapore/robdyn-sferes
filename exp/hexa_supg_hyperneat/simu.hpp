@@ -22,7 +22,8 @@
 #include <modules/nn2/trait.hpp>
 #include "af_cppn.hpp"
 
-#define ORIENTFB_LINEAR_MULTIPLIER 5 
+#define ORIENTFB_ANGLE_SENSITIVITY 30 //Determines how sensitive the orientation feedback is, specifies the maximum angle  after which feedback is max
+
 
 template<typename NN> class Simu
 {
@@ -703,7 +704,7 @@ template<typename NN> void Simu<NN> :: moveRobot(robot_t rob, float t)
 #ifndef ORIENTFB
             std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, timer_output));
 #else
-            float custom_orient = ORIENTFB_LINEAR_MULTIPLIER*rob->rot()[2]/M_PI;
+            float custom_orient = (180/ORIENTFB_ANGLE_SENSITIVITY)*rob->rot()[2]/M_PI;
             if (custom_orient > 1.0)
               custom_orient = 1.0;
             if (custom_orient < -1.0)
@@ -741,7 +742,7 @@ template<typename NN> void Simu<NN> :: moveRobot(robot_t rob, float t)
 #ifndef ORIENTFB
             std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, timer_output));
 #else
-            float custom_orient = ORIENTFB_LINEAR_MULTIPLIER*rob->rot()[2]/M_PI;
+            float custom_orient = (180/ORIENTFB_ANGLE_SENSITIVITY)*rob->rot()[2]/M_PI;
             if (custom_orient > 1.0)
               custom_orient = 1.0;
             if (custom_orient < -1.0)
