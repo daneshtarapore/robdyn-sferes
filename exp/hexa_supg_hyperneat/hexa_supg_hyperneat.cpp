@@ -91,19 +91,19 @@ struct Params
     struct pop //Parameters of the population
     {
         static constexpr unsigned size = 100; //population size
-#ifdef MICRO
-        static constexpr unsigned nb_gen = 101;
-        static constexpr int dump_period = 10;
-#else
-
-# ifdef MINI
-        static constexpr unsigned nb_gen = 1001;
-        static constexpr int dump_period = 50;
-# else
+// #ifdef MICRO
+//         static constexpr unsigned nb_gen = 10001;
+//         static constexpr int dump_period = 100;
+// #else
+//
+// # ifdef MINI
+//         static constexpr unsigned nb_gen = 10001;
+//         static constexpr int dump_period = 100;
+// # else
         static constexpr unsigned nb_gen = 10001; //10001; //total number of generations of evolution
         static constexpr int dump_period = 100;    //logs are written every dump_period generations
-# endif
-#endif
+//# endif
+//#endif
 
         static constexpr int initial_aleat = 1; //initial population size at first generation is scaled by initial_aleat
     };

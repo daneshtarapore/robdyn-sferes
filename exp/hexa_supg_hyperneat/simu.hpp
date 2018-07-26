@@ -22,9 +22,15 @@
 #include <modules/nn2/trait.hpp>
 #include "af_cppn.hpp"
 
-#define ORIENTFB_ANGLE_SENSITIVITY 30 //Determines how sensitive the orientation feedback is, specifies the maximum angle  after which feedback is max
-
-
+#ifdef OFBV1
+ #define ORIENTFB_ANGLE_SENSITIVITY 24
+#endif
+#ifdef OFBV2
+ #define ORIENTFB_ANGLE_SENSITIVITY 18
+#endif
+#ifndef ORIENTFB_ANGLE_SENSITIVITY
+#define ORIENTFB_ANGLE_SENSITIVITY 10
+#endif
 template<typename NN> class Simu
 {
 public:
