@@ -27,4 +27,4 @@ def build(bld):
                             'OFBV36 ORIENTFB TEXT', 'OFBV36 ORIENTFB GRAPHIC', \
                             'OFBV24 ORIENTFB TEXT', 'OFBV24 ORIENTFB GRAPHIC', \
                             'OFBV18 ORIENTFB TEXT', 'OFBV18 ORIENTFB GRAPHIC', \
-                            'OFVB10 ORIENTFB TEXT', 'OFVB10 ORIENTFB GRAPHIC',])
+                            'OFBV10 ORIENTFB TEXT', 'OFBV10 ORIENTFB GRAPHIC',])
