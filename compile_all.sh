@@ -3,14 +3,15 @@
 set -x # verbose
 set -e # stop on errors
 
-INSTALL="$(realpath install)"
-echo "Install directory: ${INSTALL}"
-NO_OSG=yes
-OSG=no
+#specify install directory 
+INSTALL=""
+#echo "Install directory: ${INSTALL}"
+#NO_OSG=yes
+#OSG=no
 
-echo "INSTALL: $INSTALL"
-echo "NO_OSG: $NO_OSG"
-echo "OSG: $OSG"
+#echo "INSTALL: $INSTALL"
+#echo "NO_OSG: $NO_OSG"
+#echo "OSG: $OSG"
 
 rm -rf install
 mkdir install
