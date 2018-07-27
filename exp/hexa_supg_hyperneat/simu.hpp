@@ -22,7 +22,21 @@
 #include <modules/nn2/trait.hpp>
 #include "af_cppn.hpp"
 
-
+#ifdef OFBV36
+ #define ORIENTFB_ANGLE_SENSITIVITY 24
+#endif
+#ifdef OFBV24
+ #define ORIENTFB_ANGLE_SENSITIVITY 18
+#endif
+#ifdef OFBV18
+ #define ORIENTFB_ANGLE_SENSITIVITY 24
+#endif
+#ifdef OFBV10
+ #define ORIENTFB_ANGLE_SENSITIVITY 18
+#endif
+#ifndef ORIENTFB_ANGLE_SENSITIVITY
+#define ORIENTFB_ANGLE_SENSITIVITY 180
+#endif
 template<typename NN> class Simu
 {
 public:
@@ -658,7 +672,11 @@ template<typename NN> void Simu<NN> :: moveRobot(robot_t rob, float t)
 
                 if(servo == 0)
                 {
+#ifndef ORIENTFB
                     std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, 0.0));
+#else
+                    std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, 0.0), 0.0); // the heading error is 0 at the start of the simulation
+#endif
 
                     //cppn output [-1,+1] -> [0, 1], one time period of the periodic sawtooth wave
                     _offset_time[leg][servo] = (r[1] + 1.0)/2.0;
@@ -695,7 +713,16 @@ template<typename NN> void Simu<NN> :: moveRobot(robot_t rob, float t)
             float x = _ctrlrob.substrate()[0][n].get<0>();
             float y = _ctrlrob.substrate()[0][n].get<1>();
             float timer_output = timer(leg, 0, _prev_contact[leg], _contact[leg]);
+#ifndef ORIENTFB
             std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, timer_output));
+#else
+            float custom_orient = (180/ORIENTFB_ANGLE_SENSITIVITY)*rob->rot()[2]/M_PI;
+            if (custom_orient > 1.0)
+              custom_orient = 1.0;
+            if (custom_orient < -1.0)
+              custom_orient = -1.0;
+            std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, timer_output), custom_orient); // heading (rob->rot()[2]) is normalized from [-pi, pi] to range [-1,1]
+#endif
 
             _prev_angles[leg][0] = _angles[leg][0];
 
@@ -724,7 +751,16 @@ template<typename NN> void Simu<NN> :: moveRobot(robot_t rob, float t)
             float timer_output = timer(leg, 1, _prev_contact[leg], _contact[leg]);
 
 
+#ifndef ORIENTFB
             std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, timer_output));
+#else
+            float custom_orient = (180/ORIENTFB_ANGLE_SENSITIVITY)*rob->rot()[2]/M_PI;
+            if (custom_orient > 1.0)
+              custom_orient = 1.0;
+            if (custom_orient < -1.0)
+              custom_orient = -1.0;
+            std::vector<float> r = _ctrlrob.query(boost::make_tuple(x, y, timer_output), custom_orient); // heading (rob->rot()[2]) is normalized from [-pi, pi] to range [-1,1]
+#endif
 
             _prev_angles[leg][1] = _angles[leg][1];
             _prev_angles[leg][2] = _angles[leg][2];

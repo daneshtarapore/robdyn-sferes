@@ -3,14 +3,15 @@
 set -x # verbose
 set -e # stop on errors
 
-INSTALL="$(realpath install)"
-echo "Install directory: ${INSTALL}"
-NO_OSG=yes
-OSG=no
+#specify install directory
+INSTALL=""
+#echo "Install directory: ${INSTALL}"
+#NO_OSG=yes
+#OSG=no
 
-echo "INSTALL: $INSTALL"
-echo "NO_OSG: $NO_OSG"
-echo "OSG: $OSG"
+#echo "INSTALL: $INSTALL"
+#echo "NO_OSG: $NO_OSG"
+#echo "OSG: $OSG"
 
 rm -rf install
 mkdir install
@@ -31,6 +32,6 @@ cd ..
 echo "robdyn" > modules.conf
 
 
-CXXFLAGS='-fpermissive' ./waf configure --no-mpi --robdyn-osg --includes=/usr/local/include --libs==/usr/lib/x86_64-linux-gnu --robdyn $INSTALL --eigen3 /usr/include/eigen3 --boost-libs=/usr/lib/x86_64-linux-gnu --cpp11 yes
-./waf -j4
-./waf --exp hexa_supg_hyperneat -j4
+CXXFLAGS='-fpermissive' ./waf configure --no-mpi --robdyn-osg --includes=/usr/local/include --libs==/usr/lib/x86_64-linux-gnu --robdyn $INSTALL --eigen3=/usr/include/eigen3 --boost-libs=/usr/lib/x86_64-linux-gnu --cpp11 yes
+./waf -j3
+./waf --exp hexa_supg_hyperneat -j3

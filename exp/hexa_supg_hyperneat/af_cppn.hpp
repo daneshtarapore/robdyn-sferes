@@ -42,7 +42,7 @@
 #include <sferes/gen/sampled.hpp>
 #include <sferes/gen/evo_float.hpp>
 
-// classic activation functions
+// classic activation functionss
 namespace nn
 {
   namespace cppn

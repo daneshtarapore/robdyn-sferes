@@ -23,6 +23,8 @@ def build(bld):
                            uselib = libs,
                            target = 'hexa_supg_hyperneat',
                            json = '',
-                           variants = ['TEXT','GRAPHIC'])
-
-
+                           variants = ['TEXT','GRAPHIC', 'ORIENTFB TEXT', 'ORIENTFB GRAPHIC', \
+                            'OFBV36 ORIENTFB TEXT', 'OFBV36 ORIENTFB GRAPHIC', \
+                            'OFBV24 ORIENTFB TEXT', 'OFBV24 ORIENTFB GRAPHIC', \
+                            'OFBV18 ORIENTFB TEXT', 'OFBV18 ORIENTFB GRAPHIC', \
+                            'OFBV10 ORIENTFB TEXT', 'OFBV10 ORIENTFB GRAPHIC',])
