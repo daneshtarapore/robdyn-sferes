@@ -2,6 +2,7 @@ robdyn/*.pyc
 sferes2/*.pyc
 install/
 sferes2/build
+sferes2/orientfb*
 sferes2/virtual*
 sferes2/GS60*
 sferes2/.waf*

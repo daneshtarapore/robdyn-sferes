@@ -22,14 +22,20 @@
 #include <modules/nn2/trait.hpp>
 #include "af_cppn.hpp"
 
-#ifdef OFBV1
+#ifdef OFBV36
  #define ORIENTFB_ANGLE_SENSITIVITY 24
 #endif
-#ifdef OFBV2
+#ifdef OFBV24
+ #define ORIENTFB_ANGLE_SENSITIVITY 18
+#endif
+#ifdef OFBV18
+ #define ORIENTFB_ANGLE_SENSITIVITY 24
+#endif
+#ifdef OFBV10
  #define ORIENTFB_ANGLE_SENSITIVITY 18
 #endif
 #ifndef ORIENTFB_ANGLE_SENSITIVITY
-#define ORIENTFB_ANGLE_SENSITIVITY 10
+#define ORIENTFB_ANGLE_SENSITIVITY 180
 #endif
 template<typename NN> class Simu
 {
