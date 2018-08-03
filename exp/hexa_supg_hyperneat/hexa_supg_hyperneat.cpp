@@ -91,18 +91,19 @@ struct Params
     struct pop //Parameters of the population
     {
         static constexpr unsigned size = 100; //population size
-#ifdef SEEDED_NSGA
+// #ifdef MICRO
+//         static constexpr unsigned nb_gen = 10001;
+//         static constexpr int dump_period = 100;
+// #else
+//
+// # ifdef MINI
+//         static constexpr unsigned nb_gen = 10001;
+//         static constexpr int dump_period = 100;
+// # else
         static constexpr unsigned nb_gen = 10001; //10001; //total number of generations of evolution
-        static constexpr int dump_period = 10;    //logs are written every dump_period generations
-#else
-
-#ifdef SEEDED_ENTIREPOP
-        static constexpr unsigned nb_gen = 8000 + 10001;
-#else
-        static constexpr unsigned nb_gen = 10001; //10001;
-#endif
-        static constexpr int dump_period = 50;  //logs are written every dump_period generations
-#endif
+        static constexpr int dump_period = 100;    //logs are written every dump_period generations
+//# endif
+//#endif
 
         static constexpr int initial_aleat = 1; //initial population size at first generation is scaled by initial_aleat
     };
@@ -134,9 +135,13 @@ struct Params
 
       struct dnn //the parameters for the cppn
       {
+#ifndef ORIENTFB
             //x1 and y1, the position of the supg; time since last trigger event + bias input
             static constexpr size_t nb_inputs = 4;
-
+#else
+            //x1 and y1, the position of the supg; time since last trigger event, heading orientation error + bias input
+            static constexpr size_t nb_inputs = 5;
+#endif
         //outputs: supg output and offset to timer
         static constexpr size_t nb_outputs = 2;
         static constexpr init_t init = ff; //feedforward nn
@@ -270,7 +275,7 @@ void init_simu(int argc ,char** argv, bool master)
 
 
 SFERES_FITNESS(FitSpace, sferes::fit::Fitness)
-{    
+{
     public:
     float servo_frequencies_max;
 
@@ -341,11 +346,14 @@ SFERES_FITNESS(FitSpace, sferes::fit::Fitness)
 
         if (this->mode() == sferes::fit::mode::view) //is used to  view individuals in pareto front (their ids. can be got from pareto.data)
         {
-            /*std::ofstream ofs(std::string("graph.dot").c_str());
+            std::string res_name = misc::hostname() + "_" + misc::date() + "_" + misc::getpid();
+            std::string graph_name = res_name + "/graph.dot";
+            std::string cppn_name = res_name + "/cppn.dat";
+            std::ofstream ofs(std::string(graph_name).c_str());
             indiv.gen().write_cppndot(ofs, indiv.gen().returncppn());
 
-            std::ofstream ofs_cppn(std::string("cppn.dat").c_str());
-            ofs_cppn << indiv.gen().returncppn().get_nb_neurons() << " " << indiv.gen().returncppn().get_nb_connections() <<  " " << indiv.gen().returncppn().get_nb_inputs() <<  " " << indiv.gen().returncppn().get_nb_outputs() << std::endl;*/
+            std::ofstream ofs_cppn(std::string(cppn_name).c_str());
+            ofs_cppn << indiv.gen().returncppn().get_nb_neurons() << " " << indiv.gen().returncppn().get_nb_connections() <<  " " << indiv.gen().returncppn().get_nb_inputs() <<  " " << indiv.gen().returncppn().get_nb_outputs() << std::endl;
         }
 
         //Simu <typename Indiv::gen_t> simu(indiv.gen(), global::robot, global::brokenLegs);

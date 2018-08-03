@@ -1,4 +1,3 @@
-
 //| This file is a part of the sferes2 framework.
 //| Copyright 2009, ISIR / Universite Pierre et Marie Curie (UPMC)
 //| Main contributor(s): Jean-Baptiste Mouret, mouret@isir.fr
@@ -42,65 +41,54 @@
 #include <sferes/gen/sampled.hpp>
 #include <sferes/gen/evo_float.hpp>
 
-// classic activation functionss
-namespace nn
-{
-  namespace cppn
-  {
-    enum func_e { sine = 0, sigmoid, gaussian, linear, tanh};
-    static const size_t nb_functions = 5;
-
-    SFERES_CLASS(AfParams)
-    {
-      public:
-        void set(float t, float p)
-        {
-          _type.set_data(0, t);
-          _param.data(0, p);
-        }
-        void mutate()
-        {
-          _type.mutate();
-          _param.mutate();
-        }
-        void random()
-        {
-          _type.random();
-          _param.random();
-        }
-        void develop() {
-        }
-        int type() const {
-          return _type.data(0);
-        }
-        float param() const {
-          return _param.data(0);
-        }
-        template<typename A>
-        void serialize(A& ar, unsigned int v)
-        {
-          ar& BOOST_SERIALIZATION_NVP(_type);
-          ar& BOOST_SERIALIZATION_NVP(_param);
-        }
-      protected:
-        sferes::gen::Sampled<1, Params> _type;
-        sferes::gen::EvoFloat<1, Params> _param;
+// classic activation functions
+namespace nn {
+  namespace cppn {
+    enum func_e { sine = 0, sigmoid, gaussian, linear };
+    SFERES_CONST size_t nb_functions = 3;
+    SFERES_CLASS(AfParams) {
+    public:
+      void set(float t, float p) {
+        _type.set_data(0, t);
+        _param.data(0, p);
+      }
+      void mutate() {
+        _type.mutate();
+        _param.mutate();
+      }
+      void random() {
+        _type.random();
+        _param.random();
+      }
+      void develop() {
+      }
+      int type() const {
+        return _type.data(0);
+      }
+      float param() const {
+        return _param.data(0);
+      }
+      template<typename A>
+      void serialize(A& ar, unsigned int v) {
+        ar& BOOST_SERIALIZATION_NVP(_type);
+        ar& BOOST_SERIALIZATION_NVP(_param);
+      }
+    protected:
+      sferes::gen::Sampled<1, Params> _type;
+      sferes::gen::EvoFloat<1, Params> _param;
     };
 
   }
 
-   // Activation function for Compositional Pattern Producing Networks
   // Activation function for Compositional Pattern Producing Networks
-  // Return output in range [-1,+1]
   template<typename P>
-  struct AfCppn : public Af<P>
-  {
+  struct AfCppn : public Af<P> {
     typedef P params_t;
-    float operator() (float p) const
-    {
+    float operator() (float p) const {
       float s = p > 0 ? 1 : -1;
-      switch (this->_params.type())
-      {
+      //std::cout<<"type:"<<this->_params.type()<<" p:"<<p<<" this:"<<this
+      //<< " out:"<< p * exp(-powf(p * 10/ this->_params.param(), 2))<<std::endl;
+      switch (this->_params.type()) {
       case cppn::sine:
         return sin(p);
       case cppn::sigmoid:
@@ -108,10 +96,7 @@ namespace nn
       case cppn::gaussian:
         return exp(-powf(p, 2));
       case cppn::linear:
-        return std::min(std::max(p, -3.0f), 3.0f) / 3.0f; //Normalizes activations in range [-3,+3] to [-1,+1]. Activations not in range are truncated.
-      case cppn::tanh:
-        return tanh(4.0 * sin(p));
-
+        return std::min(std::max(p, -3.0f), 3.0f) / 3.0f;
       default:
         assert(0);
       }
