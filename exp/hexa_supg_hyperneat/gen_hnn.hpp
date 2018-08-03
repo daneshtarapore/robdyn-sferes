@@ -201,19 +201,34 @@ public:
         ofs << "digraph G {" << std::endl;
         BGL_FORALL_VERTICES_T(v, nn.get_graph(), typename NN::graph_t)
         {
+#ifndef ORIENTFB
+            std::map<std::string,std::string> inout_names = {{"i0", "X"}, {"i1", "Y"}, {"i2", "Timer"}, {"i3", "Bias"}, {"o0", "SUPG"}, {"o1", "T_Offset"}};
+#else
+            std::map<std::string,std::string> inout_names = {{"i0", "X"}, {"i1", "Y"}, {"i2", "Timer"}, {"i3", "OrientFB"}, {"i4", "Bias"}, {"o0", "SUPG"}, {"o1", "T_Offset"}};
+#endif
+            //std::map<std::string,std::string> func_names = {{"0", "Sin"}, {"1", "Sig"}, {"2", "Gauss"}, {"3", "Lin"}, {"4", "Tanh"}};
+            std::string func_names[] = {"Sin", "Sig", "Gauss", "Lin", "Tanh"};
             ofs << nn.get_graph()[v].get_id();
-            ofs << " [label=\""<<nn.get_graph()[v].get_id() << "|" <<nn.get_graph()[v].get_afparams().type()<<"\"";
-
-            if (nn.is_input(v) || nn.is_output(v))
-                ofs<<" shape=doublecircle";
+            if (nn.is_input(v) || nn.is_output(v)){
+              ofs << " [label=\""<<inout_names[nn.get_graph()[v].get_id()] << "|" <<func_names[nn.get_graph()[v].get_afparams().type()]<<"\"";
+              ofs<<" shape=doublecircle";
+            }
+            else
+              ofs << " [label=\""<<nn.get_graph()[v].get_afparams().type()<<"\"";
 
             ofs <<"]"<< std::endl;
         }
         BGL_FORALL_EDGES_T(e, nn.get_graph(), typename NN::graph_t)
         {
+            float weight = nn.get_graph()[e].get_weight().data(0);
+            std::string color;
+            if (weight > 0.0f)
+              color = "blue";
+            else
+              color = "orange";
             ofs << nn.get_graph()[source(e, nn.get_graph())].get_id()
                 << " -> " << nn.get_graph()[target(e, nn.get_graph())].get_id()
-                << "[label=\"" << nn.get_graph()[e].get_weight() << "\"]" << std::endl;
+                << "[label=\"" << weight <<"\" "<<"color="<<color<<" "<<"penwidth="<<fabs(weight)<< "]" << std::endl;
         }
         ofs << "}" << std::endl;
     }

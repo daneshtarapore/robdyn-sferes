@@ -346,11 +346,14 @@ SFERES_FITNESS(FitSpace, sferes::fit::Fitness)
 
         if (this->mode() == sferes::fit::mode::view) //is used to  view individuals in pareto front (their ids. can be got from pareto.data)
         {
-            /*std::ofstream ofs(std::string("graph.dot").c_str());
+            std::string res_name = misc::hostname() + "_" + misc::date() + "_" + misc::getpid();
+            std::string graph_name = res_name + "/graph.dot";
+            std::string cppn_name = res_name + "/cppn.dat";
+            std::ofstream ofs(std::string(graph_name).c_str());
             indiv.gen().write_cppndot(ofs, indiv.gen().returncppn());
 
-            std::ofstream ofs_cppn(std::string("cppn.dat").c_str());
-            ofs_cppn << indiv.gen().returncppn().get_nb_neurons() << " " << indiv.gen().returncppn().get_nb_connections() <<  " " << indiv.gen().returncppn().get_nb_inputs() <<  " " << indiv.gen().returncppn().get_nb_outputs() << std::endl;*/
+            std::ofstream ofs_cppn(std::string(cppn_name).c_str());
+            ofs_cppn << indiv.gen().returncppn().get_nb_neurons() << " " << indiv.gen().returncppn().get_nb_connections() <<  " " << indiv.gen().returncppn().get_nb_inputs() <<  " " << indiv.gen().returncppn().get_nb_outputs() << std::endl;
         }
 
         //Simu <typename Indiv::gen_t> simu(indiv.gen(), global::robot, global::brokenLegs);

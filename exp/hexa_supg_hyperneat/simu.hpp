@@ -22,20 +22,34 @@
 #include <modules/nn2/trait.hpp>
 #include "af_cppn.hpp"
 
+#include <sferes/dbg/dbg.hpp>
+#include <sferes/stc.hpp>
+#include <sferes/run.hpp>
+#include <sferes/misc.hpp>
+
+#ifdef OFBV90
+ #define ORIENTFB_ANGLE_SENSITIVITY 90.0
+#endif
+#ifdef OFBV70
+ #define ORIENTFB_ANGLE_SENSITIVITY 70.0
+#endif
+#ifdef OFBV50
+ #define ORIENTFB_ANGLE_SENSITIVITY 50.0
+#endif
 #ifdef OFBV36
- #define ORIENTFB_ANGLE_SENSITIVITY 36
+ #define ORIENTFB_ANGLE_SENSITIVITY 36.0
 #endif
 #ifdef OFBV24
- #define ORIENTFB_ANGLE_SENSITIVITY 24
+ #define ORIENTFB_ANGLE_SENSITIVITY 24.0
 #endif
 #ifdef OFBV18
- #define ORIENTFB_ANGLE_SENSITIVITY 18
+ #define ORIENTFB_ANGLE_SENSITIVITY 18.0
 #endif
 #ifdef OFBV10
- #define ORIENTFB_ANGLE_SENSITIVITY 10
+ #define ORIENTFB_ANGLE_SENSITIVITY 10.0
 #endif
 #ifndef ORIENTFB_ANGLE_SENSITIVITY
-#define ORIENTFB_ANGLE_SENSITIVITY 180
+#define ORIENTFB_ANGLE_SENSITIVITY 180.0
 #endif
 template<typename NN> class Simu
 {
@@ -95,6 +109,9 @@ public:
         }
 
 #ifdef GRAPHIC
+        //std::string res_name = misc::hostname() + "_" + misc::date() + "_" + misc::getpid();
+        //write_contact(res_name + "contact_simu.txt");
+        //write_traj(res_name + "traj_simu.txt");
         write_contact("contact_simu.txt");
         write_traj("traj_simu.txt");
 #endif

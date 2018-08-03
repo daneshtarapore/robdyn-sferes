@@ -10,6 +10,7 @@ sferes2/.lock-wscript
 sferes2/contact_simu.txt
 sferes2/performance_metrics.dat
 sferes2/traj_simu.txt
+sferes2/test_ofb*
 robdyn/.waf*
 robdyn/.lock-wscript
 robdyn/bld
